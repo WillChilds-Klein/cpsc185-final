@@ -29,6 +29,7 @@ except IOError:
     print ("Startup Failure: You need to place a "
            "config.py in your content directory.")
 
+app.debug = True
 manager = Manager(app)
 
 

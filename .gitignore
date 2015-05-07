@@ -2,5 +2,5 @@ wiki/venv
 wiki/.venv
 wiki/*.pyc
 wiki/*.sublime-*
-wiki/content/*.md
+wiki/content/*
 !wiki/content/home.md
