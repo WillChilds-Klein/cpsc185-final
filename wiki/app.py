@@ -368,6 +368,8 @@ def create():
 @app.route('/edit/<path:url>/', methods=['GET', 'POST'])
 def edit(url):
     page = wiki.get(url)
+    if page:
+        return redirect(url_for('display', url=url))
     form = EditorForm(obj=page)
     if form.validate_on_submit():
         if not page:
