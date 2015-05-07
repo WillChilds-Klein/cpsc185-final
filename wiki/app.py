@@ -246,14 +246,6 @@ class Wiki(object):
             os.path.join(self.root, newurl) + '.md'
         )
 
-    def delete(self, url):
-        path = self.path(url)
-        if not self.exists(url):
-            return False
-        print path
-        os.remove(path)
-        return True
-
     def index(self, attr=None):
         def _walk(directory, path_prefix=()):
             for name in os.listdir(directory):
@@ -372,13 +364,6 @@ class UserManager(object):
         if not userdata:
             return None
         return User(self, name, userdata)
-
-    def delete_user(self, name):
-        users = self.read()
-        if not users.pop(name, False):
-            return False
-        self.write(users)
-        return True
 
     def update(self, name, userdata):
         data = self.read()
@@ -577,27 +562,6 @@ def preview():
     return data['html']
 
 
-@app.route('/move/<path:url>/', methods=['GET', 'POST'])
-@protect
-def move(url):
-    page = wiki.get_or_404(url)
-    form = URLForm(obj=page)
-    if form.validate_on_submit():
-        newurl = form.url.data
-        wiki.move(url, newurl)
-        return redirect(url_for('.display', url=newurl))
-    return render_template('move.html', form=form, page=page)
-
-
-@app.route('/delete/<path:url>/')
-@protect
-def delete(url):
-    page = wiki.get_or_404(url)
-    wiki.delete(url)
-    flash('Page "%s" was deleted.' % page.title, 'success')
-    return redirect(url_for('home'))
-
-
 @app.route('/tags/')
 @protect
 def tags():
@@ -622,46 +586,6 @@ def search():
                                results=results, search=form.term.data)
     return render_template('search.html', form=form, search=None)
 
-
-@app.route('/user/login/', methods=['GET', 'POST'])
-def user_login():
-    form = LoginForm()
-    if form.validate_on_submit():
-        user = users.get_user(form.name.data)
-        login_user(user)
-        user.set('authenticated', True)
-        flash('Login successful.', 'success')
-        return redirect(request.args.get("next") or url_for('index'))
-    return render_template('login.html', form=form)
-
-
-@app.route('/user/logout/')
-@login_required
-def user_logout():
-    current_user.set('authenticated', False)
-    logout_user()
-    flash('Logout successful.', 'success')
-    return redirect(url_for('index'))
-
-
-@app.route('/user/')
-def user_index():
-    pass
-
-
-@app.route('/user/create/')
-def user_create():
-    pass
-
-
-@app.route('/user/<int:user_id>/')
-def user_admin(user_id):
-    pass
-
-
-@app.route('/user/delete/<int:user_id>/')
-def user_delete(user_id):
-    pass
 
 
 """
