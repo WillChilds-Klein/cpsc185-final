@@ -1,8 +1,14 @@
-tags:
-title: Welcome to Yale TrueSecret
+---
+title: Yale TrueSecret
+subtitle: Final Project for CPSC 185
+---
 
 # TL;DR
 Yale TrueSecret (YTS) is a truly anonymous, unmoderated, and immutable space for the unfettered expression of thought. There are no usernames, profiles, or even IP-address logs. YTS is hosted as a Hidden Service on the Tor anonymity network. Once something is posted, it remains on the website until the server is taken offline. However, thanks to YTS's containerized deployment strategy, it is fairly trivial to re-deploy in the unlikelihood of such an event.
+
+
+![](assets/screenshot.png)
+
 
 # Motivation
 Many fora exist for the exchange of opinions and knowledge. Thanks to the Internet revolution, social networks, email, and myriad other electronic communication methods have become part and parcel to daily life in the 21st century. We've reached an age with unprecedented connectivity, where differences in geographical space have been obviated by cyberspace. This comes at the cost, however, of general privacy. Everywhere we go on the 'net, our actions are monitored, logged, and stored for analysis. Even encrypted HTTP traffic divulges crucial metadata about the communication patterns of both sender and recipient. 
@@ -10,6 +16,8 @@ Many fora exist for the exchange of opinions and knowledge. Thanks to the Intern
 While accountability is certainly an important factor in argumentation, there are times when it is a hindrance to free expression. Dissenting or unpopular opinions can elicit acrimony in a hegemonic majority, and produce undesireable consequences for their authors if they are voiced accountably. This intimidation stands as a massive impedement to ideological progress. 
 
 It is for these reasons that accessibility to a channel for anonymous expression and dissent is vital, especially in a community such as Yale. To this end, we present Yale TrueSecret.
+
+
 
 # Design & Technology
 ## Anonymity
@@ -23,11 +31,15 @@ Thankfully, Tor has an answer to this as well, known as the Hidden Service Proto
 ## Website
 Yale TrueSecret is a minimal application written in [Python]() using the [Flask]() framework. It is what is known as a "static site generator", which means that at its core, it does little more than store files that users create and produce them upon request. It does this without any need for a database, instead just writing them to disk on the host machine, and reading and serving them at the user's behest. The code behind YTS is a mutt of open-source projects thrown together and built on top of one another, but its closest relative is the Python Flask wiki app [created by Alexander Jung-Loddenkemper](https://github.com/alexex/wiki), which I forked and modified extensively. All of the code for Yale TrueSecret, as well as all of the deployment and configuration scripts, can be found [here](https://github.com/WillChilds-Klein/cpsc185-final)
 
+
 ## Deployment
 Yale TrueSecret is deployed using [Docker]() containers on a [DigitalOcean]()virtual private server (VPS). Sometimes referred to as "lightweight virtual machines", containers are essentially process sandboxes based on the [linux container]() specification, a part of most contemporary linux kernel distributions. Containers are advantageous in the deployment of a system such as this becuase they are inherently portable across *just about any* server configuration. Moreover, Docker has provided the tooling around its containers to allow administrators to version, move, and redeploy their "containerized" applicaitons. This is handy because setting up massively distributed backups becomes almost trivial. And should some 3-letter agency come a'knocking on your VPS provider's door and take the site down, just set up a new VPS instance and run the `launch.sh` script provided with Yale TrueSecret, and the service will be back up within a matter of minutes.
 
+
+
 # Future Work
 [Tor2web]() has been fairly finnicky as of late. I haven't been able to get it to work on either Chrome or Safari browsers. This is quite a shame, because it would greatly facilitate access. However, It is not a complicated technology, and wouldn't be too dificult to re-implement for the purposes of mirroring Yale TrueSecret. Tor2web is nothing more than a proxy server, one end of which accepts user requests from its DNS (read: normal internet) address while the other is connected to the Tor network. The service fetches a user's desired hidden service (*any* `.onion` address) page from the Tor network and relays the content back over the normal connection to the user. For our purposes, we would only have to connect to *one* hidden service. It could probably be implemented without writing any actual code, instead just configuring a standard webserver or proxy to fetch content from Yale TrueSecret.
+
 
 
 # How To Access

@@ -4,3 +4,4 @@ wiki/*.pyc
 wiki/*.sublime-*
 wiki/content/*
 !wiki/content/home.md
+*.pdf
